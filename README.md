@@ -3,7 +3,7 @@
 To run:
 
 <<<<<<< HEAD
-TODO: Clean this README up. Perhaps it is clean
+TODO: Clean this README up.
 
 
 
