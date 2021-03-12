@@ -31,7 +31,7 @@ export default async function messageAddedHandler(msg) {
     // Check if suggestion needs handling.
     SuggestionsHelper.onMessage(msg);
 
-    // Add to message notification tracking for keeping people updated on where things are said.
+    // Add to message notifications tracking for keeping people updated on where things are said.
     MessageNotifications.add(msg);
 
     // Handle reports to leaders.
