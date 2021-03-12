@@ -4,6 +4,7 @@ import STATE from "../../../../state";
 import { EGG_DATA } from "../../minigame/small/egghunt";
 import PointsHelper from "../../points/pointsHelper";
 import ItemsHelper from "../itemsHelper";
+import EMOJIS from "../../../../core/config/emojis.json";
 
 
 // TODO: Make into "ReactionUsableItem" and add callback
@@ -46,7 +47,13 @@ export default class AverageEggHandler {
             } catch(e) {
                 console.error(e);
             }
-        }   
+        }
+
+
+        // On 3 average hearts, allow average egg suggestion.
+        if (reaction.emoji.name === '💚' && reaction.count === 3)
+            // Add average_egg emoji reaction.
+            MessagesHelper.delayReact(reaction.message, EMOJIS.AVERAGE_EGG, 333);
     }
    
 }

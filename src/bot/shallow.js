@@ -33,7 +33,7 @@ const shallowBot = async () => {
         
         
         // NOTES AND LONGER TERM CHALLENGES/ISSUES:
-        // List my own/users' trades (like item commands).
+        // List my own/users trades (like items command).
         // List all trades, trades of item, trades of matching items.
         // Get exchange rate based on current trades for that item
 
@@ -42,14 +42,14 @@ const shallowBot = async () => {
         // Create a trade.
         // Accept a trade.
         // ...
-        // Accept a specific trade; may need a command
+        // Accept a specific trade may need a command
 
 
         // Hard, Quick:
-        // Add a multiplier to drops for wood etc... too weak at the moment.
+        // Add a multiplier to drops for wood etc... too weak atm.
 
         // Harder:
-        // Finish actions messages for woodcutting/mining/crate drops
+        // Finish actions messages for woodcutting/mining/crate drop
         // Detect server message/activity velocity increases (as % preferably).
         // Detect the completed gathering of wood/rocks
 

@@ -4,7 +4,7 @@ import STATE from "../../../../state";
 import PointsHelper from "../../points/pointsHelper";
 import ItemsHelper from "../itemsHelper";
 
-export default class ToxigEggHandler {
+export default class ToxicEggHandler {
 
     static async onReaction(reaction, user) {
         if (reaction.emoji.name === 'toxic_egg') {
@@ -49,7 +49,13 @@ export default class ToxigEggHandler {
             } catch(e) {
                 console.error(e);
             }
-        }   
+        }
+
+        // On 3 average hearts, allow average egg suggestion.
+        if (reaction.emoji.name === '☢️' && reaction.count === 3)
+            // Add legendary_egg emoji reaction.
+            MessagesHelper.delayReact(reaction.message, EMOJIS.TOXIC_EGG, 333);
+        
     }
    
 }

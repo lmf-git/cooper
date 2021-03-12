@@ -17,14 +17,24 @@ export default class RolesHelper {
         try {
             const guild = ServerHelper._coop();
             const role = this.getRoleByID(guild, ROLES[roleCode].id);
-            const user = UsersHelper._getMemberByID(userID);
-            if (role && user) return await user.roles.add(role);
+            const member = UsersHelper._getMemberByID(userID);
+
+            console.log(role.name, member.id);
+            // 727311131705868299 COMMANDER
+            // 723676356818239773 LEADER
+
+            if (role && member) {
+                const roleActionResult = await member.roles.add(role);
+                return roleActionResult
+            } else {
+                // Should throw error?
+                return false;
+            }
         } catch(e) {
             console.log('Error adding role');
             console.error(e);
         }
-        // 727311131705868299 COMMANDER
-        // 723676356818239773 LEADER
+
     }
 
     static async toggle(userID, roleCode) {
@@ -63,6 +73,11 @@ export default class RolesHelper {
 
     static addRoleCodeToUserID(userID, roleCode) {
 
+    }
+
+    static _has(member, roleCode) {
+        const roleID = ROLES[roleCode].id;
+        return member.roles.cache.has(roleID);
     }
 
     static _getUsersWithRoleCodes(roleCodes) {

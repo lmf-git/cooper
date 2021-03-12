@@ -1,9 +1,8 @@
 # Cooper (The Coop's Discord Bot)
+https://docs.google.com/document/d/1nmZARuG1FRNW4sibJU0k2BleP5KTcKurBa-Uul7lCf4/edit?usp=sharing
 
-To run:
 
-<<<<<<< HEAD
-TODO: Clean this README up. Perhaps it is clean
+TODO: Clean this README up.
 
 
 
@@ -41,9 +40,6 @@ CREATE TABLE items(
         REFERENCES users(discord_id)
         ON DELETE CASCADE
 );
-
-
-
 
 CREATE TABLE election_votes(
     id SERIAL PRIMARY KEY,
@@ -141,11 +137,3 @@ ALTER TABLE temp_messages
     
 ALTER TABLE temp_messages
     DROP COLUMN message_id;
-=======
-1. Clone repo
-2. npm i
-3. Create .env file in root
-4. Add DISCORD_TOKEN=TOKEN line to .env
-5. Add DATABASE_URL=DATABASE_URL line to .env
-6. npm run shallowBot (or full bot).
->>>>>>> 7c90723f5cfa4f70f0f323825ffdb9b66773723b

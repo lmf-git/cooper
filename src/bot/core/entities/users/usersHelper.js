@@ -16,6 +16,7 @@ export default class UsersHelper {
         return ServerHelper._coop().members.cache;
     }
 
+    static _get = this._getMemberByID;
     static _getMemberByID(id) {
         return this._cache().get(id);
     }
@@ -56,6 +57,8 @@ export default class UsersHelper {
     static getOnlineMembers = (guild) => guild.members.cache.filter(member => member.presence.status === 'online');
     
     static filterMembers = (guild, filter) => guild.members.cache.filter(filter);
+
+    static _filter = filter => ServerHelper._coop().members.cache.filter(filter);
 
     static getOnlineMembersByRoles(guild, roleNames) {
         const notificiationRoles = guild.roles.cache.filter(role => roleNames.includes(role.name));

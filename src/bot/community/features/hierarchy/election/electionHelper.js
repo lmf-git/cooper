@@ -1,15 +1,16 @@
 import moment from 'moment';
+import _ from 'lodash';
+
+import Chicken from "../../../chicken";
+import Database from '../../../../core/setup/database';
+
+import CHANNELS from '../../../../core/config/channels.json';
 
 import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
 import ServerHelper from '../../../../core/entities/server/serverHelper';
 import UsersHelper from '../../../../core/entities/users/usersHelper';
-import Database from '../../../../core/setup/database';
-import Chicken from "../../../chicken";
 import TimeHelper from '../../server/timeHelper';
-
-import CHANNELS from '../../../../core/config/channels.json';
-import STATE from '../../../../state';
 import DatabaseHelper from '../../../../core/entities/databaseHelper';
 import VotingHelper from '../../../events/voting/votingHelper';
 import RolesHelper from '../../../../core/entities/roles/rolesHelper';
@@ -282,15 +283,48 @@ export default class ElectionHelper {
         }
     }
 
-    // TODO: Implement this.
     static async ensureItemSeriousness() {
-        // Any leader who has role but not leaders_sword -> role removed.
-        // Any commander who has role but not election_crown -> role removed.
+        try {
+            // Load hierarchy on basis of items.
+            const leaderItems = await ItemsHelper.getUsersWithItem('LEADERS_SWORD');
+            const commanderItem = await ItemsHelper.getUserWithItem('ELECTION_CROWN');
+            const swordOwners = leaderItems.map(item => item.owner_id);
 
+            // Load users by roles for comparison/checking.
+            const roleHierarchy = this._roleHierarchy();
+            
+            // Any leader who has role but not leaders_sword -> role removed.
+            roleHierarchy.leaders.map(leader => {
+                // Check each role item for existence in leader items ownership data.
+                if (!swordOwners.includes(leader.user.id) && RolesHelper._has(leader, 'LEADER'))
+                    RolesHelper._remove(leader.user.id, 'LEADER');
+            });
+            
+            // Any commander who has role but not election_crown -> role removed.
+            if (roleHierarchy.commander) {
+                const isUsurper = commanderItem.owner_id !== roleHierarchy.commander.user.id;
+                if (isUsurper && RolesHelper._has(roleHierarchy.commander, 'COMMANDER'))
+                    RolesHelper._remove(roleHierarchy.commander.user.id, 'COMMANDER');
+            }
+        
+            // Get leaders by loading members via IDs
+            const rightfulLeaders = UsersHelper._filter(user => swordOwners.includes(user.id));
 
+            // Any leader who has leaders_sword but not role -> leaders_sword added.
+            rightfulLeaders.map(leader => {
+                if (!RolesHelper._has(leader, 'LEADER'))
+                    RolesHelper._add(leader.user.id, 'LEADER');
+            });
 
-        // Any leader who has leaders_sword but not role -> leaders_sword added.
-        // Any commander who has election_crown but not role -> election_crown added.
+            // Any commander who has election_crown but not role -> election_crown added.
+            const rightfulCommander = UsersHelper._get(commanderItem.owner_id);
+            if (!RolesHelper._has(rightfulCommander, 'COMMANDER'))
+                RolesHelper._add(rightfulCommander.user.id, 'COMMANDER');
+
+        } catch(e) {
+            console.log('Error ensuring item seriousness.');
+            console.error(e);
+        }
     }
 
     static async checkProgress() {
@@ -600,6 +634,14 @@ export default class ElectionHelper {
         return false;
     }
 
+    static _roleHierarchy() {
+        const hierarchy = {
+            commander: RolesHelper._getUserWithCode('COMMANDER'),
+            leaders: RolesHelper._getUsersWithRoleCodes(['LEADER'])
+        };
+        return hierarchy;
+    }
+
     static async countdownFeedback() {
         const elecMsg = await this.getElectionMsg();
         const diff = parseInt(Date.now()) - elecMsg.editedTimestamp;
@@ -610,19 +652,18 @@ export default class ElectionHelper {
             const humanRemaining = TimeHelper.humaniseSecs(diff);
             const nextElecReadable = await this.nextElecFmt();
 
-            const hierarchy = {
-                commander: RolesHelper._getUserWithCode('COMMANDER'),
-                leaders: RolesHelper._getUsersWithRoleCodes(['LEADER'])
-            }
+            const hierarchy = this._roleHierarchy();
 
-            await this.editElectionInfoMsg(`**Election is over, here are your current officials:** \n\n` +
+            await this.editElectionInfoMsg(
+                `**Election is over, here are your current officials:** \n\n` +
 
                 `**Commander:**\n${hierarchy.commander.user.username} :crown: \n\n` +
 
                 `**Leaders:**\n` +
                     `${hierarchy.leaders.map(leader => `${leader.user.username} :crossed_swords:`).join('\n')}\n\n` +
 
-                `**Next Election:** ${nextElecReadable} (${humanRemaining})`);
+                `**Next Election:** ${nextElecReadable} (${humanRemaining})`
+            );
         }
     }
 

@@ -21,16 +21,25 @@ export default class TradesCommand extends CoopCommand {
 					type: 'string',
 					default: 'ALL'
 				},
+				{
+					key: 'receiveItemCode',
+					prompt: 'Which item_code should you receive?',
+					type: 'string',
+					default: ''
+				}
 			],
 		});
 	}
 
-	async run(msg, { offerItemCode }) {
+	async run(msg, { offerItemCode, receiveItemCode }) {
 		super.run(msg);
 
 		try {
+			// TODO: Implement trade slots
+			// const tradeslotStr = `${msg.author.username} has ?/? available trade slots currently.`;
+
 			// Calculate used/total trade slots.
-			const tradeslotStr = `${msg.author.username} has ?/? available trade slots currently.`;
+			const tradeslotStr = `${msg.author.username} has ?/? active trades currently.`;
 			await MessagesHelper.selfDestruct(msg, tradeslotStr);
 
 			// Distinguish between whether the user wants all trade information of a specific one.
@@ -39,6 +48,8 @@ export default class TradesCommand extends CoopCommand {
 
 			} else {
 				// Get trades by a certain item code
+				// TODO: Make work for single or both
+				// if (receiveItemCode && receiveItemCode !== '') {
 			}
 			
 		} catch(e) {

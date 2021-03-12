@@ -19,7 +19,7 @@ export default class ItemListCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
-		const usableItems = ItemsHelper.getUsableItems().map((x) => ItemsHelper.BeautifyItemCode(x)).join('\n');
+		const usableItems = ItemsHelper.getUsableItems().map((x) => ItemsHelper.beautifyItemCode(x)).join('\n');
 		const usableItemsMsgText = `Usable Items: \n ${usableItems}`;
 		const listMsg = await msg.say(usableItemsMsgText);
 

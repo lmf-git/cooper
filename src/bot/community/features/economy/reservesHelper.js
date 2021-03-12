@@ -26,4 +26,9 @@ export default class ReservesHelper {
         return STATE.WALLET.get_balance();
     }
 
+    static async address() {
+        const def = await STATE.WALLET.get_address_by_label({ label: 'default' });
+        return def.data.address;
+    }
+
 }

@@ -155,7 +155,7 @@ export default class MiscMessageHandlers {
                 MessagesHelper.delayReact(msg, '🪐', 333);
         }
 
-        //surprise lmf, i hope this works ;--;
+        // surprise lmf, i hope this works ;--;
         if (msg.author.id === '786671654721683517') {
             if (STATE.CHANCE.bool({ likelihood: 1.5 }))
                 MessagesHelper.delayReact(msg, '737182281130704936', 333);            

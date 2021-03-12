@@ -39,14 +39,16 @@ export default class TradeFindCommand extends CoopCommand {
 		// If receive item code has been given, make sure only those matching returned.
 		if (receiveItemCode && receiveItemCode !== '') {
 			// If both items given, list only those matching.
-			const matches = await TradeHelper.listMatch(offerItemCode, receiveItemCode);
+			const matches = await TradeHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
 			
 			if (matches.length === 0) return MessagesHelper.selfDestruct(msg, 
 				`No existing trades exchanging ${offerItemCode} for ${receiveItemCode}`);
 
+			console.log(matches);
+
 		} else {
 			// If only offer item given, list all of that type.
-			const types = await TradeHelper.listType(offerItemCode);
+			const types = await TradeHelper.findReceiveMatches(offerItemCode);
 
 			if (matches.length === 0) return MessagesHelper.selfDestruct(msg, 
 				`No existing trades offering ${offerItemCode}`);

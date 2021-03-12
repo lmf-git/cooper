@@ -195,11 +195,21 @@ export default class ItemsHelper {
         return matches.map(x => x.replace(/\s/g, '_'));
     }
 
-    static BeautifyItemCode(Code) {
+    static beautifyItemCode(Code) {
         const LowerName = Code.replace("_", " ").toLowerCase();
         const nameCapitalized = LowerName.charAt(0).toUpperCase() + LowerName.slice(1);
         const emoji = MessagesHelper.emojifyID(EMOJIS[Code]);
         return nameCapitalized + " " + emoji;
+    }
+
+    static async getUserWithItem(itemCode) {
+        const query = {
+            name: "get-user-with-item",
+            text: `SELECT * FROM "items" WHERE quantity > 0 AND item_code = $1`,
+            values: [itemCode]
+        };
+        const result = await Database.query(query);
+        return DatabaseHelper.single(result);
     }
 
     static async getUsersWithItem(itemCode) {

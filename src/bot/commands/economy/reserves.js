@@ -23,7 +23,7 @@ export default class ReservesCommand extends CoopCommand {
 		// TODO: Notify community with over 10% change to reserves.
 		MessagesHelper.selfDestruct(
 			msg, 
-			`**Economy Reserves:**\n ${await ReservesHelper.balanceText()}`
+			`**Economy Reserves:**\n${await ReservesHelper.balanceText()}`
 		);
     }
     

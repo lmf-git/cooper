@@ -5,6 +5,7 @@ import MessagesHelper from '../../core/entities/messages/messagesHelper';
 import ServerHelper from '../../core/entities/server/serverHelper';
 import UsersHelper from '../../core/entities/users/usersHelper';
 import STATE from '../../state';
+import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
 
 export default class GiveCommand extends CoopCommand {
 
@@ -73,6 +74,10 @@ export default class GiveCommand extends CoopCommand {
 			if (await ItemsHelper.use(msg.author.id, itemCode, qty)) {
 				await ItemsHelper.add(target.id, itemCode, qty);
 				
+				// Intercept the giving of election items.
+				if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')
+					ElectionHelper.ensureItemSeriousness();
+
 				const addText = `${msg.author.username} gave ${target.username} ${itemCode}x${qty}.`;
 				ChannelsHelper.propagate(msg, addText, 'ACTIONS');
 			}
