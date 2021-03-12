@@ -2,7 +2,7 @@
 https://docs.google.com/document/d/1nmZARuG1FRNW4sibJU0k2BleP5KTcKurBa-Uul7lCf4/edit?usp=sharing
 
 
-TODO: Clean this README up.
+TODO: Clean this README up. Perhaps it is clean
 
 
 
