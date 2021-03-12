@@ -40,7 +40,7 @@ export default async function messageAddedHandler(msg) {
     // Add newsletter subscription handler/email accepter.
     SubscriptionHelper.onMessage(msg);
 
-    // Miscelleanous jokes and responses.
+    // Miscellaneous jokes and responses.
     MiscMessageHandlers.onMessage(msg);
 
     // Suppress previews from links but add toggle react.

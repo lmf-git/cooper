@@ -12,7 +12,7 @@ export default class CoopCommand extends Command {
 
 		// TODO: Log calling command.
 
-		// TODO: Acknowledge first coop-command usage + points/achievement too.
+		// TODO: Acknowledge first coop-command usage + points/achievements too.
     }
     
 };

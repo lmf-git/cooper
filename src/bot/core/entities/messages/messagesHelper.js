@@ -76,7 +76,7 @@ export default class MessagesHelper {
     }
 
 
-    // Handles :single: and :double:id emoji input
+    // Handles :single: and :double: id emoji input
     // Not sure about emoji direct unicode (image char)
     static _displayEmojiCode(code) {
         let displayStr = '?';
