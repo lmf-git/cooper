@@ -187,7 +187,10 @@ export default class ElectionHelper {
            
             // Remove roles from previous hierarchy.
             await this.resetHierarchyRoles();
-
+            
+            // Handle election items.
+            await this.resetHierarchyItems();
+            
             // Add roles to winners.
             await RolesHelper._add(hierarchy.commander.id, 'COMMANDER');
             await Promise.all(hierarchy.leaders.map(async (leader, index) => {
@@ -218,8 +221,7 @@ export default class ElectionHelper {
             await this.editElectionInfoMsg(declareText);
 
 
-            // Handle election items.
-            await this.resetHierarchyItems();
+            
 
             // Add the election items.
             ItemsHelper.add(hierarchy.commander.id, 'ELECTION_CROWN', 1);
