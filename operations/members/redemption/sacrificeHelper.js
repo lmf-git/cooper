@@ -111,11 +111,13 @@ export default class SacrificeHelper {
                 } else {
                     // Provide feedback for user who is not currently protected or sacrificed.
                     COOP.CHANNELS.codeShout(reaction.message,
-                        `**Remaining votes to sacrifice ${targetMember.user.username}**` +
+                        `**Vote to decide ${targetMember.user.username}**'s fate!` +
                         `\n\n` +
-                        `Protect: ${EMOJIS.SACRIFICE_SHIELD} ${remainingProtectVotes} ${EMOJIS.SACRIFICE_SHIELD}` +
-                        `| Sacrifice: ${EMOJIS.DAGGER} ${remainingSacrificeVotes} ${EMOJIS.DAGGER}`, 
-                        'FEED',
+                        `${EMOJIS.SACRIFICE_SHIELD} - ${remainingProtectVotes} more vote(s) to protect.` +
+                        `${EMOJIS.DAGGER} - ${remainingSacrificeVotes} more vote(s) to sacrifice.`,
+                        'FEED', +
+                        `\n\n` +
+                        `> **Vote now!** - <#${CHANNELS.SACRIFICE.id}}>`,
                         true
                     );
                 }
